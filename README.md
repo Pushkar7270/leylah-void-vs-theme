@@ -4,7 +4,9 @@
 
 Black background, magenta trim, violet starfield, gold armor, ice-blue accent — every token class gets its own hue so you can read a line in one glance.
 
-![Leylah Void preview](assets/preview.png)
+![Leylah Void running in VSCodium](assets/screenshot.png)
+
+<sub>Leylah Void in VSCodium — real project, real editor, pitch-black background.</sub>
 
 <p>
   <img alt="engine" src="https://img.shields.io/badge/VS%20Code-%5E1.60-FF3D9A?style=flat-square">
@@ -49,12 +51,12 @@ The theme ships as a standard `.vsix`, so it works in VS Code, VSCodium and any 
 
 ### VS Code
 
-**GUI:** download [`dist/leylah-void-1.1.0.vsix`](dist/leylah-void-1.1.0.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
+**GUI:** download [`dist/leylah-void-1.1.1.vsix`](dist/leylah-void-1.1.1.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
 
 **Terminal:**
 
 ```bash
-code --install-extension dist/leylah-void-1.1.0.vsix
+code --install-extension dist/leylah-void-1.1.1.vsix
 ```
 
 ### VSCodium
@@ -64,7 +66,7 @@ code --install-extension dist/leylah-void-1.1.0.vsix
 **Terminal:**
 
 ```bash
-codium --install-extension dist/leylah-void-1.1.0.vsix
+codium --install-extension dist/leylah-void-1.1.1.vsix
 ```
 
 > On some distros the binary is called `vscodium` instead of `codium`.
@@ -74,8 +76,8 @@ codium --install-extension dist/leylah-void-1.1.0.vsix
 Each fork has its own CLI that accepts the same file:
 
 ```bash
-cursor --install-extension dist/leylah-void-1.1.0.vsix
-windsurf --install-extension dist/leylah-void-1.1.0.vsix
+cursor --install-extension dist/leylah-void-1.1.1.vsix
+windsurf --install-extension dist/leylah-void-1.1.1.vsix
 ```
 
 Or use the GUI: Extensions view → `...` → **Install from VSIX…**
@@ -83,7 +85,7 @@ Or use the GUI: Extensions view → `...` → **Install from VSIX…**
 ### code-server / browser VS Code
 
 ```bash
-code-server --install-extension dist/leylah-void-1.1.0.vsix
+code-server --install-extension dist/leylah-void-1.1.1.vsix
 ```
 
 ### Manual install (no CLI, no VSIX)
@@ -105,7 +107,7 @@ No Node.js required — the build script only uses the Python standard library:
 git clone https://github.com/Pushkar7270/leylah-void-vs-theme.git
 cd leylah-void-vs-theme
 python3 scripts/build-vsix.py
-# -> dist/leylah-void-1.1.0.vsix
+# -> dist/leylah-void-1.1.1.vsix
 ```
 
 Regenerating the preview image and icon needs [Pillow](https://python-pillow.org/):
@@ -154,13 +156,14 @@ Or right-click the extension in the Extensions view → **Uninstall**.
 ├── themes/
 │   └── leylah-void-color-theme.json    # the theme: 535 UI colors + token rules
 ├── assets/
-│   ├── preview.png                     # README screenshot (generated)
+│   ├── screenshot.png                  # real VSCodium screenshot (README hero)
+│   ├── preview.png                     # generated palette preview
 │   └── icon.png                        # extension icon (generated)
 ├── scripts/
 │   ├── build-vsix.py                   # builds dist/*.vsix, stdlib only
 │   └── make-assets.py                  # regenerates preview + icon (Pillow)
 ├── dist/
-│   └── leylah-void-1.1.0.vsix          # ready-to-install package
+│   └── leylah-void-1.1.1.vsix          # ready-to-install package
 ├── CHANGELOG.md
 └── LICENSE
 ```

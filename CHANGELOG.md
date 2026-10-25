@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1
+
+- README now shows a real VSCodium screenshot of the theme instead of the
+  generated mockup.
+
 ## 1.1.0
 
 - Renamed the theme to **Leylah Void** (was Hanabi Void).
