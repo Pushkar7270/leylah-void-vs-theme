@@ -177,6 +177,7 @@ Or right-click the extension in the Extensions view → **Uninstall**.
 │   └── icon.png                        # extension icon (generated)
 ├── scripts/
 │   ├── build-vsix.py                   # builds dist/*.vsix, stdlib only
+│   ├── install-local.sh                # build + install + drop stale copies
 │   └── make-assets.py                  # regenerates preview + icon (Pillow)
 ├── dist/
 │   └── leylah-void-2.0.0.vsix          # ready-to-install package
