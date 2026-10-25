@@ -12,10 +12,10 @@ MONO_B = "/usr/share/fonts/truetype/dejavu/DejaVuSansMono-Bold.ttf"
 SANS_B = "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
 
 C = dict(
-    kw="#FF3D9A", storage="#B98CFF", type="#FFC857", func="#5CC8FF",
-    string="#FFA36B", num="#FF6B81", prop="#C9B8F5", param="#F5C6B0",
-    comment="#7A7396", op="#A79FCB", punct="#7E7799", esc="#FFD166",
-    self="#FF8FD0", teal="#7BE0CE", ann="#7CE38B", text="#E8E2F2", dim="#4E4868",
+    kw="#FE6BF5", storage="#A890FD", type="#E0AA12", func="#28A7FD",
+    string="#1AC6C6", num="#FD7770", prop="#9570FD", param="#918DAB",
+    comment="#726E8B", op="#777390", punct="#777390", esc="#E0AA12",
+    self="#918DAB", teal="#1AC6C6", ann="#11CD61", text="#EDE9F7", dim="#5A5468",
 )
 
 CODE = [
@@ -83,7 +83,7 @@ def make_preview():
         for txt, col, style in parts:
             if not txt:
                 continue
-            font = fb if style == "b" else f
+            font = fb if style == "b" or col == C["func"] else f
             d.text((x, y), txt, font=font, fill=col or "#E8E2F2")
             x += d.textlength(txt, font=font)
         y += 24 * S

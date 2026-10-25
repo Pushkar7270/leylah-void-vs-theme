@@ -1,47 +1,64 @@
 # Leylah Void
 
-**A pitch-black VS Code theme with high-distinction syntax colors.**
+**A pitch-black VS Code theme built on one palette, in three contrast tiers.**
 
-Black background, magenta trim, violet starfield, gold armor, ice-blue accent — every token class gets its own hue so you can read a line in one glance.
+Black background, neon magenta trim, violet starfield, gold armor, ice-blue accent — and a syntax palette where every color is mathematically related to the others instead of being picked one at a time.
 
-![Leylah Void running in VSCodium](assets/screenshot.png)
-
-<sub>Leylah Void in VSCodium — real project, real editor, pitch-black background.</sub>
+![Leylah Void preview](assets/preview.png)
 
 <p>
-  <img alt="engine" src="https://img.shields.io/badge/VS%20Code-%5E1.60-FF3D9A?style=flat-square">
+  <img alt="engine" src="https://img.shields.io/badge/VS%20Code-%5E1.60-FE6BF5?style=flat-square">
   <img alt="type" src="https://img.shields.io/badge/theme-dark-000000?style=flat-square">
-  <img alt="license" src="https://img.shields.io/badge/license-MIT-FFC857?style=flat-square">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-E0AA12?style=flat-square">
 </p>
 
 ---
 
-## Why it looks like this
+## The design system
 
-- **`#000000` editor background** — true black, not "very dark grey".
-- **One hue per token class** — keywords, declarations, types, functions, strings, numbers, properties and parameters never share a color.
-- **Contrast checked** — every syntax color is verified against `#000000`; the lowest is 4.72:1 (comments, intentionally recessive), everything else is 7:1 or higher.
-- **Semantic highlighting on** — types, methods and properties stay correctly colored even where a grammar is ambiguous.
-- **Bracket pair colorization** — six-color cycling, aligned with the palette.
+### 1. One register: neon
 
-## Palette
+The whole syntax palette is **maximum-chroma neon** — each hue is pushed to the edge of the sRGB gamut at its lightness. There is no mixing of matte and gloss, no pastel token sitting next to a neon one, no muted accent beside a saturated one.
 
-| Role | Color | Sample |
+The greys are not neutral greys either: they are the violet hue at very low chroma, so even the quiet parts belong to the same family.
+
+### 2. Three contrast tiers
+
+Colors are grouped by how much attention they deserve, not by taste. Within a tier every color is solved to the **same contrast ratio against `#000000`**, so no token accidentally shouts louder than its neighbours.
+
+| Tier | Contrast vs black | What lives here |
 | --- | --- | --- |
-| Control flow — `if` `for` `return` `await` `import` | hot magenta, bold | `#FF3D9A` |
-| Declarations — `const` `class` `def` `async` `static` | violet | `#B98CFF` |
-| Types, classes, interfaces, enums | gold | `#FFC857` |
-| Functions & methods | ice blue | `#5CC8FF` |
-| Strings | peach | `#FFA36B` |
-| Numbers, booleans, `null` / `None` | coral | `#FF6B81` |
-| Properties, fields, attributes | lilac | `#C9B8F5` |
-| Parameters | warm rose, italic | `#F5C6B0` |
-| Annotations, decorators, attributes — `@Override` `@dataclass` | emerald, italic | `#7CE38B` |
-| Namespaces, modules, regex | teal | `#7BE0CE` |
-| Operators | muted lavender | `#A79FCB` |
-| Comments | grey-violet, italic | `#7A7396` |
+| **Signal** | **8.0 – 10.0 : 1** | keywords, functions, types, strings, numbers, annotations |
+| **Support** | **6.0 – 6.7 : 1** | properties, variables, parameters, doc comments |
+| **Noise** | **4.3 – 4.6 : 1** | operators, punctuation, comments |
 
-UI surfaces stay between `#000000` and `#120C1E`, borders are deep indigo `#1C1530`, and magenta `#FF3D9A` marks the cursor, active tab, focus ring and badges.
+The result is the hierarchy from the feedback: a line of ordinary code stays calm, and the moment a function name or a keyword appears, it is the brightest thing on screen.
+
+### 3. Colour theory
+
+The hues form an **analogous arc** — magenta → violet → blue → cyan → green — with two warm anchors, **gold** and **coral**, sitting opposite the blue end. Adjacent hues are at least 30° apart, and every pair in the signal tier is separated by an OKLab distance of **ΔE ≥ 0.13** (roughly six times the just-noticeable difference).
+
+### 4. The palette
+
+| Role | Tier | Color | Contrast | Style |
+| --- | --- | --- | --- | --- |
+| Keywords — `if` `for` `return` `await` | signal | `#FE6BF5` | 8.64:1 | bold |
+| Declarations — `const` `def` `class` `async` | signal | `#A890FD` | 8.07:1 | — |
+| Functions & methods | signal | `#28A7FD` | 8.04:1 | bold |
+| Strings, namespaces, regex | signal | `#1AC6C6` | 9.94:1 | — |
+| Types, classes, interfaces, enums | signal | `#E0AA12` | 9.93:1 | — |
+| Numbers, booleans, `null` / `None` | signal | `#FD7770` | 8.05:1 | — |
+| Annotations — `@Override` `@dataclass` | signal | `#11CD61` | 9.93:1 | italic |
+| Properties, fields, attributes | support | `#9570FD` | 6.01:1 | — |
+| Variables & identifiers | support | `#918DAB` | 6.60:1 | — |
+| Parameters | support | `#918DAB` | 6.60:1 | italic |
+| Operators | noise | `#777390` | 4.64:1 | — |
+| Punctuation & brackets | noise | `#777390` | 4.64:1 | — |
+| Comments | noise | `#726E8B` | 4.32:1 | italic |
+
+UI surfaces stay between `#000000` and `#100A1B`, borders are deep indigo `#171129`, and the magenta `#FE6BF5` marks the cursor, active tab, focus ring and badges.
+
+Semantic highlighting is enabled, so types, functions and properties stay correctly colored even where a grammar is ambiguous.
 
 ---
 
@@ -51,12 +68,12 @@ The theme ships as a standard `.vsix`, so it works in VS Code, VSCodium and any 
 
 ### VS Code
 
-**GUI:** download [`dist/leylah-void-1.1.1.vsix`](dist/leylah-void-1.1.1.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
+**GUI:** download [`dist/leylah-void-2.0.0.vsix`](dist/leylah-void-2.0.0.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
 
 **Terminal:**
 
 ```bash
-code --install-extension dist/leylah-void-1.1.1.vsix
+code --install-extension dist/leylah-void-2.0.0.vsix
 ```
 
 ### VSCodium
@@ -66,7 +83,7 @@ code --install-extension dist/leylah-void-1.1.1.vsix
 **Terminal:**
 
 ```bash
-codium --install-extension dist/leylah-void-1.1.1.vsix
+codium --install-extension dist/leylah-void-2.0.0.vsix
 ```
 
 > On some distros the binary is called `vscodium` instead of `codium`.
@@ -76,8 +93,8 @@ codium --install-extension dist/leylah-void-1.1.1.vsix
 Each fork has its own CLI that accepts the same file:
 
 ```bash
-cursor --install-extension dist/leylah-void-1.1.1.vsix
-windsurf --install-extension dist/leylah-void-1.1.1.vsix
+cursor --install-extension dist/leylah-void-2.0.0.vsix
+windsurf --install-extension dist/leylah-void-2.0.0.vsix
 ```
 
 Or use the GUI: Extensions view → `...` → **Install from VSIX…**
@@ -85,7 +102,7 @@ Or use the GUI: Extensions view → `...` → **Install from VSIX…**
 ### code-server / browser VS Code
 
 ```bash
-code-server --install-extension dist/leylah-void-1.1.1.vsix
+code-server --install-extension dist/leylah-void-2.0.0.vsix
 ```
 
 ### Manual install (no CLI, no VSIX)
@@ -107,7 +124,7 @@ No Node.js required — the build script only uses the Python standard library:
 git clone https://github.com/Pushkar7270/leylah-void-vs-theme.git
 cd leylah-void-vs-theme
 python3 scripts/build-vsix.py
-# -> dist/leylah-void-1.1.1.vsix
+# -> dist/leylah-void-2.0.0.vsix
 ```
 
 Regenerating the preview image and icon needs [Pillow](https://python-pillow.org/):
@@ -154,16 +171,15 @@ Or right-click the extension in the Extensions view → **Uninstall**.
 .
 ├── package.json                        # extension manifest
 ├── themes/
-│   └── leylah-void-color-theme.json    # the theme: 535 UI colors + token rules
+│   └── leylah-void-color-theme.json    # 535 UI colors + token rules
 ├── assets/
-│   ├── screenshot.png                  # real VSCodium screenshot (README hero)
-│   ├── preview.png                     # generated palette preview
+│   ├── preview.png                     # README preview (generated)
 │   └── icon.png                        # extension icon (generated)
 ├── scripts/
 │   ├── build-vsix.py                   # builds dist/*.vsix, stdlib only
 │   └── make-assets.py                  # regenerates preview + icon (Pillow)
 ├── dist/
-│   └── leylah-void-1.1.1.vsix          # ready-to-install package
+│   └── leylah-void-2.0.0.vsix          # ready-to-install package
 ├── CHANGELOG.md
 └── LICENSE
 ```

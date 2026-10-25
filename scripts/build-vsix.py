@@ -60,7 +60,6 @@ files = [
     ("package.json", "extension/package.json"),
     ("themes/leylah-void-color-theme.json", "extension/themes/leylah-void-color-theme.json"),
     ("assets/icon.png", "extension/assets/icon.png"),
-    ("assets/screenshot.png", "extension/assets/screenshot.png"),
     ("README.md", "extension/README.md"),
     ("LICENSE", "extension/LICENSE"),
     ("CHANGELOG.md", "extension/CHANGELOG.md"),

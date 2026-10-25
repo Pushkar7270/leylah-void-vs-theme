@@ -1,5 +1,21 @@
 # Changelog
 
+## 2.0.0
+
+Complete palette rebuild after design review.
+
+- **One register:** every syntax color is now maximum-chroma neon, pushed to the
+  edge of the sRGB gamut. No more mixing pastel, muted and neon tokens.
+- **Three contrast tiers**, each with a fixed contrast band against `#000000`:
+  signal 8.0-10.0:1, support 6.0-6.7:1, noise 4.3-4.6:1.
+- Function names are now bold and sit in the signal tier, so they are the first
+  thing the eye lands on.
+- Variables, parameters and doc comments moved to the support tier; operators,
+  punctuation and comments moved to the noise tier.
+- Hues form an analogous magenta -> violet -> blue -> cyan -> green arc with warm
+  gold and coral anchors; minimum OKLab separation 0.13.
+- Workbench UI recolored to match; neon buttons now use dark text.
+
 ## 1.1.1
 
 - README now shows a real VSCodium screenshot of the theme instead of the

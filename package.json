@@ -1,8 +1,8 @@
 {
   "name": "leylah-void",
   "displayName": "Leylah Void",
-  "description": "Pitch-black dark theme with high-contrast, instantly distinguishable syntax colors - magenta, violet, gold, ice blue and emerald.",
-  "version": "1.1.1",
+  "description": "Pitch-black dark theme built on a single neon palette in three contrast tiers - magenta, violet, blue, cyan, green, gold and coral.",
+  "version": "2.0.0",
   "publisher": "pushkar7270",
   "license": "MIT",
   "icon": "assets/icon.png",
