@@ -56,6 +56,26 @@ The hues form an **analogous arc** — magenta → violet → blue → cyan → 
 | Punctuation & brackets | noise | `#777390` | 4.64:1 | — |
 | Comments | noise | `#726E8B` | 4.32:1 | italic |
 
+### 5. Verification
+
+The claims above are not eyeballed — they are re-checked by a script:
+
+```bash
+python3 scripts/check-palette.py
+```
+
+It verifies every syntax colour against its tier band, the minimum hue step
+(30°), the minimum perceptual distance (ΔE 0.10 in OKLab) and that each hex in
+the palette actually exists in the theme file.
+
+**Known limitation:** an equal-lightness palette is, by construction, weaker
+under colour-vision deficiency. Under simulated deuteranopia the closest pair
+(annotation green vs number coral) drops to ΔE ≈ 0.01. Shape and style carry the
+difference there — annotations are italic, function names are bold — but if you
+need strict CVD separation, the fix is to spread lightness across ~1.5× contrast
+steps instead of keeping one band, which trades away the "everything equally
+bright" look.
+
 UI surfaces stay between `#000000` and `#100A1B`, borders are deep indigo `#171129`, and the magenta `#FE6BF5` marks the cursor, active tab, focus ring and badges.
 
 Semantic highlighting is enabled, so types, functions and properties stay correctly colored even where a grammar is ambiguous.
@@ -178,6 +198,7 @@ Or right-click the extension in the Extensions view → **Uninstall**.
 ├── scripts/
 │   ├── build-vsix.py                   # builds dist/*.vsix, stdlib only
 │   ├── install-local.sh                # build + install + drop stale copies
+│   ├── check-palette.py                # contrast / hue / CVD verification
 │   └── make-assets.py                  # regenerates preview + icon (Pillow)
 ├── dist/
 │   └── leylah-void-2.0.0.vsix          # ready-to-install package
