@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0
+
+Two finishes, one hue family.
+
+- **Leylah Void: Neon** - vivid, warm, peak contrast capped at 8.4:1.
+- **Leylah Void: Matte** - dusty, warm, chroma held at 34% of maximum and
+  contrast compressed into the 6.3-7.8:1 band.
+- Palette warmed throughout: rose, warm violet, periwinkle, teal, olive-green,
+  gold and coral; warm charcoal surfaces; warm off-white text.
+- Removed the saturated cyan and electric blue that caused glare on black.
+- Theme files are now generated from `themes/_base.json` by
+  `scripts/build-palettes.py`.
+- `scripts/check-palette.py` validates both variants.
+
 ## 2.0.0
 
 Complete palette rebuild after design review.

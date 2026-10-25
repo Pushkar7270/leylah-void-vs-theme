@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Verify the palette against its own design rules.
+"""Verify both variants against their own design rules.
 
-Checks, in order:
+Checks:
   1. every syntax colour sits in its declared contrast band vs #000000
-  2. hues are spaced far enough apart to be told apart at a glance
-  3. pairwise perceptual distance (OKLab) is above the JND threshold
-  4. how the palette degrades under colour-vision deficiency (report only)
+  2. signal hues are at least 30 degrees apart
+  3. pairwise perceptual distance (OKLab) clears the variant's threshold
+  4. how each palette degrades under colour-vision deficiency (report only)
 
 Usage: python3 scripts/check-palette.py
 Exit code 1 if a hard rule fails.
@@ -16,22 +16,40 @@ import os
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-THEME = os.path.join(ROOT, "themes", "leylah-void-color-theme.json")
 
-# role: (hex, tier)
-TIERS = {"signal": (8.0, 10.0), "support": (6.0, 6.7), "noise": (4.2, 4.8)}
-ROLES = {
-    "keyword":     ("#FE6BF5", "signal"),
-    "declaration": ("#A890FD", "signal"),
-    "function":    ("#28A7FD", "signal"),
-    "string":      ("#1AC6C6", "signal"),
-    "annotation":  ("#11CD61", "signal"),
-    "type":        ("#E0AA12", "signal"),
-    "number":      ("#FD7770", "signal"),
-    "property":    ("#9570FD", "support"),
-    "variable":    ("#918DAB", "support"),
-    "operator":    ("#777390", "noise"),
-    "comment":     ("#726E8B", "noise"),
+ROLE_RULES = {
+    "keyword": "Keywords — control flow",
+    "declaration": "Keywords — declarations, storage, modifiers",
+    "function": "Functions and methods",
+    "string": "Strings",
+    "annotation": "Annotations / decorators / attributes",
+    "type": "Types, classes, interfaces, enums",
+    "number": "Numbers",
+    "property": "Properties, fields, attributes, keys",
+    "variable": "Variables and identifiers",
+    "operator": "Operators",
+    "comment": "Comments",
+}
+
+VARIANTS = {
+    "neon": {
+        "file": "themes/leylah-void-neon-color-theme.json",
+        "bands": {"signal": (8.2, 8.6), "support": (6.0, 6.2), "noise": (4.2, 4.7)},
+        "tiers": {"signal": ("keyword", "declaration", "function", "string",
+                             "annotation", "type", "number"),
+                  "support": ("property", "variable"),
+                  "noise": ("operator", "comment")},
+        "min_de": 0.10,
+    },
+    "matte": {
+        "file": "themes/leylah-void-matte-color-theme.json",
+        "bands": {"signal": (6.2, 7.9), "support": (4.9, 5.3), "noise": (3.7, 4.1)},
+        "tiers": {"signal": ("keyword", "declaration", "function", "string",
+                             "annotation", "type", "number"),
+                  "support": ("property", "variable"),
+                  "noise": ("operator", "comment")},
+        "min_de": 0.04,
+    },
 }
 
 
@@ -43,13 +61,13 @@ def lin(c):
     return c / 12.92 if c <= 0.04045 else ((c + 0.055) / 1.055) ** 2.4
 
 
-def lum(hx):
+def luminance(hx):
     r, g, b = [lin(c) for c in rgb(hx)]
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
 def contrast(a, b="#000000"):
-    la, lb = lum(a), lum(b)
+    la, lb = luminance(a), luminance(b)
     hi, lo = max(la, lb), min(la, lb)
     return (hi + 0.05) / (lo + 0.05)
 
@@ -101,58 +119,70 @@ def hue(hx):
     return math.degrees(math.atan2(b, a)) % 360
 
 
-def main():
-    theme = json.load(open(THEME))
-    theme_hex = json.dumps(theme)
+def load(variant):
+    theme = json.load(open(os.path.join(ROOT, VARIANTS[variant]["file"])))
+    rules = {r["name"]: r["settings"].get("foreground") for r in theme["tokenColors"]}
+    return {role: rules[rule] for role, rule in ROLE_RULES.items()}
+
+
+def check(variant):
+    spec = VARIANTS[variant]
+    pal = load(variant)
     failures = []
+    print(f"\n=== {variant.upper()} ===")
 
-    print("1. CONTRAST BANDS vs #000000")
-    for role, (hx, tier) in ROLES.items():
-        lo, hi = TIERS[tier]
-        r = contrast(hx)
-        ok = lo <= r <= hi
-        if not ok:
-            failures.append(f"{role} {hx} at {r:.2f}:1 outside {tier} band")
-        if hx not in theme_hex:
-            failures.append(f"{role} {hx} is not present in the theme file")
-        print(f"   {'ok ' if ok else 'FAIL'} {role:12s} {hx}  {r:5.2f}:1  ({tier})")
+    print("1. contrast bands")
+    for tier, roles in spec["tiers"].items():
+        lo, hi = spec["bands"][tier]
+        for role in roles:
+            hx = pal[role]
+            r = contrast(hx)
+            ok = lo <= r <= hi
+            if not ok:
+                failures.append(f"{variant}/{role} {hx} at {r:.2f}:1 outside {tier} {lo}-{hi}")
+            print(f"   {'ok  ' if ok else 'FAIL'} {role:12s} {hx}  {r:5.2f}:1  ({tier})")
 
-    print("\n2. HUE GEOMETRY (signal tier)")
-    sig = [(r, hx) for r, (hx, t) in ROLES.items() if t == "signal"]
-    angles = sorted((hue(hx), r) for r, hx in sig)
+    print("2. hue steps (signal)")
+    angles = sorted((hue(pal[r]), r) for r in spec["tiers"]["signal"])
     for i in range(len(angles)):
-        a, name_a = angles[i]
-        b, name_b = angles[(i + 1) % len(angles)]
+        a, na = angles[i]
+        b, nb = angles[(i + 1) % len(angles)]
         step = (b - a) % 360
-        flag = "ok " if step >= 30 else "FAIL"
-        if step < 30:
-            failures.append(f"{name_a}->{name_b} hue step only {step:.1f} deg")
-        print(f"   {flag} {name_a:12s} -> {name_b:12s} {step:5.1f} deg")
+        ok = step >= 30
+        if not ok:
+            failures.append(f"{variant}/{na}->{nb} hue step {step:.1f} deg")
+        print(f"   {'ok  ' if ok else 'FAIL'} {na:12s} -> {nb:12s} {step:5.1f} deg")
 
-    print("\n3. PERCEPTUAL DISTANCE (normal vision)")
-    worst = min(((math.dist(oklab(a), oklab(b)), na, nb)
-                 for i, (na, a) in enumerate(sig)
-                 for nb, b in sig[i + 1:]), key=lambda x: x[0])
-    ok = worst[0] >= 0.10
+    print("3. perceptual distance")
+    sig = spec["tiers"]["signal"]
+    worst = min(((math.dist(oklab(pal[a]), oklab(pal[b])), a, b)
+                 for i, a in enumerate(sig) for b in sig[i + 1:]), key=lambda x: x[0])
+    ok = worst[0] >= spec["min_de"]
     if not ok:
-        failures.append(f"{worst[1]}/{worst[2]} dE {worst[0]:.3f} below 0.10")
-    print(f"   {'ok ' if ok else 'FAIL'} closest pair: {worst[1]} / {worst[2]}  dE={worst[0]:.3f}")
-    print(f"   (JND is about 0.02; the design target is 0.10)")
+        failures.append(f"{variant}/{worst[1]}/{worst[2]} dE {worst[0]:.3f} < {spec['min_de']}")
+    print(f"   {'ok  ' if ok else 'FAIL'} closest: {worst[1]} / {worst[2]}  dE={worst[0]:.3f}"
+          f"  (target {spec['min_de']})")
 
-    print("\n4. COLOUR-VISION DEFICIENCY (report only, no pass/fail)")
+    print("4. colour-vision deficiency (report only)")
     for kind in CVD:
-        worst = min(((math.dist(simulate(a, kind), simulate(b, kind)), na, nb)
-                     for i, (na, a) in enumerate(sig)
-                     for nb, b in sig[i + 1:]), key=lambda x: x[0])
+        worst = min(((math.dist(simulate(pal[a], kind), simulate(pal[b], kind)), a, b)
+                     for i, a in enumerate(sig) for b in sig[i + 1:]), key=lambda x: x[0])
         print(f"   {kind:6s} closest: {worst[1]} / {worst[2]}  dE={worst[0]:.3f}")
 
+    return failures
+
+
+def main():
+    failures = []
+    for variant in VARIANTS:
+        failures += check(variant)
     print()
     if failures:
         print("FAILED:")
         for f in failures:
             print("  -", f)
         return 1
-    print("All hard checks passed.")
+    print("All hard checks passed for both variants.")
     return 0
 
 

@@ -1,99 +1,109 @@
 # Leylah Void
 
-**A pitch-black VS Code theme built on one palette, in three contrast tiers.**
+**One pitch-black theme, two finishes: Neon and Matte.**
 
-Black background, neon magenta trim, violet starfield, gold armor, ice-blue accent — and a syntax palette where every color is mathematically related to the others instead of being picked one at a time.
+Same warm hue family, same contrast system, same hierarchy. The only thing that changes is the finish — vivid or dusty.
 
-![Leylah Void preview](assets/preview.png)
+| Neon | Matte |
+| --- | --- |
+| ![Leylah Void: Neon](assets/preview-neon.png) | ![Leylah Void: Matte](assets/preview-matte.png) |
+| Max in-gamut chroma, signal tier at ~8.4:1 | Chroma held at 34% of max, compressed contrast |
 
 <p>
-  <img alt="engine" src="https://img.shields.io/badge/VS%20Code-%5E1.60-FE6BF5?style=flat-square">
+  <img alt="engine" src="https://img.shields.io/badge/VS%20Code-%5E1.60-FE6FCF?style=flat-square">
   <img alt="type" src="https://img.shields.io/badge/theme-dark-000000?style=flat-square">
-  <img alt="license" src="https://img.shields.io/badge/license-MIT-E0AA12?style=flat-square">
+  <img alt="license" src="https://img.shields.io/badge/license-MIT-D89825?style=flat-square">
 </p>
 
 ---
 
+## Why two
+
+A car looks right either all matte or all gloss. Mixing finishes inside one theme is what looks wrong, so this repository ships both finishes as complete, internally consistent themes — not one theme with half its colors dulled.
+
+- **Neon** — vivid, warm, high separation. For people who want the code to light up.
+- **Matte** — dusty, warm, low glare. For long sessions and bright rooms.
+
+Both keep the same hue assignments, so switching between them doesn't re-teach you the syntax colors.
+
 ## The design system
 
-### 1. One register: neon
+### Warm, not sharp
 
-The whole syntax palette is **maximum-chroma neon** — each hue is pushed to the edge of the sRGB gamut at its lightness. There is no mixing of matte and gloss, no pastel token sitting next to a neon one, no muted accent beside a saturated one.
+Every hue sits on the warm side of the wheel or is deliberately muted:
 
-The greys are not neutral greys either: they are the violet hue at very low chroma, so even the quiet parts belong to the same family.
+- rose `342°` · warm violet `305°` · periwinkle `255°` · teal `182°` · olive-green `126°` · gold `76°` · coral `28°`
+- surfaces are warm charcoal (`#0C0908` neon, `#0D0A09` matte), never blue-black
+- plain text is warm off-white `#E5D7D3` / `#AFA4A0`, never pure white
+- peak contrast is capped at **8.4:1** instead of pushing toward 12:1, which is what usually causes glare on black
+- no saturated cyan or electric blue: the coolest accents are a soft teal and a periwinkle
 
-### 2. Three contrast tiers
+### Three contrast tiers
 
-Colors are grouped by how much attention they deserve, not by taste. Within a tier every color is solved to the **same contrast ratio against `#000000`**, so no token accidentally shouts louder than its neighbours.
+Colors are grouped by how much attention they deserve. Within a tier, every color is solved numerically to the same contrast ratio against `#000000`, so no token shouts by accident.
 
-| Tier | Contrast vs black | What lives here |
+| Tier | Neon | Matte | What lives here |
+| --- | --- | --- | --- |
+| **Signal** | 8.38 – 8.44 : 1 | 6.30 – 7.78 : 1 | keywords, functions, types, strings, numbers, annotations |
+| **Support** | 6.07 – 6.11 : 1 | 4.99 – 5.19 : 1 | properties, variables |
+| **Noise** | 4.30 – 4.57 : 1 | 3.79 – 3.99 : 1 | operators, comments |
+
+Matte uses a wider signal band on purpose: with chroma pulled down, **lightness** has to carry more of the separation.
+
+### Attention hierarchy
+
+Ordinary code stays quiet — variables sit in the support tier, punctuation and operators in noise. The moment a function name, keyword, type or string appears, it is the brightest thing on the line. Function names are bold in both variants.
+
+### Colour theory
+
+The signal hues form an **analogous arc** (rose → violet → periwinkle → teal → olive) with two warm anchors, **gold** and **coral**, opposite the cool end. Adjacent hues are at least **37°** apart, and the closest pair in each variant clears **ΔE 0.12** (neon) / **ΔE 0.05** (matte) in OKLab.
+
+## The palettes
+
+| Role | Neon | Matte |
 | --- | --- | --- |
-| **Signal** | **8.0 – 10.0 : 1** | keywords, functions, types, strings, numbers, annotations |
-| **Support** | **6.0 – 6.7 : 1** | properties, variables, parameters, doc comments |
-| **Noise** | **4.3 – 4.6 : 1** | operators, punctuation, comments |
+| Keywords — `if` `for` `return` | `#FE6FCF` | `#C58DAC` |
+| Declarations — `const` `def` `class` | `#C18CF9` | `#9D82B6` |
+| Functions & methods (bold) | `#65A6F9` | `#8199BB` |
+| Strings, namespaces, regex | `#39B6A5` | `#779993` |
+| Types, classes, interfaces | `#D89825` | `#AE987B` |
+| Numbers, booleans, `None` | `#FA8072` | `#C18C86` |
+| Annotations — `@Override` `@dataclass` | `#8BB044` | `#8B9A74` |
+| Properties, fields | `#A970E3` | `#8F73A8` |
+| Variables, parameters | `#9C857E` | `#857975` |
+| Operators, punctuation | `#85716B` | `#736A67` |
+| Comments | `#7C6E6A` | `#6E6765` |
 
-The result is the hierarchy from the feedback: a line of ordinary code stays calm, and the moment a function name or a keyword appears, it is the brightest thing on screen.
+UI surfaces stay between `#000000` and `#1A1210`, borders are warm `#33251F`, and the keyword color marks the cursor, active tab, focus ring and badges.
 
-### 3. Colour theory
-
-The hues form an **analogous arc** — magenta → violet → blue → cyan → green — with two warm anchors, **gold** and **coral**, sitting opposite the blue end. Adjacent hues are at least 30° apart, and every pair in the signal tier is separated by an OKLab distance of **ΔE ≥ 0.13** (roughly six times the just-noticeable difference).
-
-### 4. The palette
-
-| Role | Tier | Color | Contrast | Style |
-| --- | --- | --- | --- | --- |
-| Keywords — `if` `for` `return` `await` | signal | `#FE6BF5` | 8.64:1 | bold |
-| Declarations — `const` `def` `class` `async` | signal | `#A890FD` | 8.07:1 | — |
-| Functions & methods | signal | `#28A7FD` | 8.04:1 | bold |
-| Strings, namespaces, regex | signal | `#1AC6C6` | 9.94:1 | — |
-| Types, classes, interfaces, enums | signal | `#E0AA12` | 9.93:1 | — |
-| Numbers, booleans, `null` / `None` | signal | `#FD7770` | 8.05:1 | — |
-| Annotations — `@Override` `@dataclass` | signal | `#11CD61` | 9.93:1 | italic |
-| Properties, fields, attributes | support | `#9570FD` | 6.01:1 | — |
-| Variables & identifiers | support | `#918DAB` | 6.60:1 | — |
-| Parameters | support | `#918DAB` | 6.60:1 | italic |
-| Operators | noise | `#777390` | 4.64:1 | — |
-| Punctuation & brackets | noise | `#777390` | 4.64:1 | — |
-| Comments | noise | `#726E8B` | 4.32:1 | italic |
-
-### 5. Verification
-
-The claims above are not eyeballed — they are re-checked by a script:
+### Verification
 
 ```bash
 python3 scripts/check-palette.py
 ```
 
-It verifies every syntax colour against its tier band, the minimum hue step
-(30°), the minimum perceptual distance (ΔE 0.10 in OKLab) and that each hex in
-the palette actually exists in the theme file.
+Checks both variants: contrast bands, hue spacing (≥30°), perceptual distance, and that every declared hex exists in the theme file. Regenerate the palettes from scratch with:
 
-**Known limitation:** an equal-lightness palette is, by construction, weaker
-under colour-vision deficiency. Under simulated deuteranopia the closest pair
-(annotation green vs number coral) drops to ΔE ≈ 0.01. Shape and style carry the
-difference there — annotations are italic, function names are bold — but if you
-need strict CVD separation, the fix is to spread lightness across ~1.5× contrast
-steps instead of keeping one band, which trades away the "everything equally
-bright" look.
+```bash
+python3 scripts/build-palettes.py   # rewrites both theme JSONs from themes/_base.json
+```
 
-UI surfaces stay between `#000000` and `#100A1B`, borders are deep indigo `#171129`, and the magenta `#FE6BF5` marks the cursor, active tab, focus ring and badges.
-
-Semantic highlighting is enabled, so types, functions and properties stay correctly colored even where a grammar is ambiguous.
+**Known limitation:** equal-lightness palettes are weaker under colour-vision deficiency. Simulated deuteranopia collapses the closest pair to ΔE ≈ 0.017 (neon) / 0.009 (matte). Style carries part of the difference — annotations italic, functions bold — but strict CVD separation would require spreading lightness across ~1.5× contrast steps, which breaks the "everything equally bright" rule both variants follow.
 
 ---
 
 ## Install
 
-The theme ships as a standard `.vsix`, so it works in VS Code, VSCodium and any VS Code–compatible editor.
+The theme ships as a standard `.vsix`, so it works in VS Code, VSCodium and any VS Code–compatible editor. One package, two themes.
 
 ### VS Code
 
-**GUI:** download [`dist/leylah-void-2.0.0.vsix`](dist/leylah-void-2.0.0.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
+**GUI:** download [`dist/leylah-void-2.1.0.vsix`](dist/leylah-void-2.1.0.vsix), then open the Extensions view (`Ctrl+Shift+X`) → `...` menu → **Install from VSIX…** and pick the file.
 
 **Terminal:**
 
 ```bash
-code --install-extension dist/leylah-void-2.0.0.vsix
+code --install-extension dist/leylah-void-2.1.0.vsix
 ```
 
 ### VSCodium
@@ -103,18 +113,16 @@ code --install-extension dist/leylah-void-2.0.0.vsix
 **Terminal:**
 
 ```bash
-codium --install-extension dist/leylah-void-2.0.0.vsix
+codium --install-extension dist/leylah-void-2.1.0.vsix
 ```
 
 > On some distros the binary is called `vscodium` instead of `codium`.
 
 ### Cursor, Windsurf and other VS Code forks
 
-Each fork has its own CLI that accepts the same file:
-
 ```bash
-cursor --install-extension dist/leylah-void-2.0.0.vsix
-windsurf --install-extension dist/leylah-void-2.0.0.vsix
+cursor --install-extension dist/leylah-void-2.1.0.vsix
+windsurf --install-extension dist/leylah-void-2.1.0.vsix
 ```
 
 Or use the GUI: Extensions view → `...` → **Install from VSIX…**
@@ -122,7 +130,7 @@ Or use the GUI: Extensions view → `...` → **Install from VSIX…**
 ### code-server / browser VS Code
 
 ```bash
-code-server --install-extension dist/leylah-void-2.0.0.vsix
+code-server --install-extension dist/leylah-void-2.1.0.vsix
 ```
 
 ### Manual install (no CLI, no VSIX)
@@ -144,10 +152,10 @@ No Node.js required — the build script only uses the Python standard library:
 git clone https://github.com/Pushkar7270/leylah-void-vs-theme.git
 cd leylah-void-vs-theme
 python3 scripts/build-vsix.py
-# -> dist/leylah-void-2.0.0.vsix
+# -> dist/leylah-void-2.1.0.vsix
 ```
 
-Regenerating the preview image and icon needs [Pillow](https://python-pillow.org/):
+Regenerating the previews and icon needs [Pillow](https://python-pillow.org/):
 
 ```bash
 python3 scripts/make-assets.py
@@ -155,24 +163,24 @@ python3 scripts/make-assets.py
 
 ---
 
-## Activate the theme
+## Activate
 
-After installing, the editor may keep your current theme. Select it once:
+After installing, pick a finish:
 
 1. Press `Ctrl+K Ctrl+T` (`Cmd+K Cmd+T` on macOS).
-2. Choose **Leylah Void**.
+2. Choose **Leylah Void: Neon** or **Leylah Void: Matte**.
 
-To make it the default, add this to your `settings.json` (`Ctrl+Shift+P` → **Preferences: Open User Settings (JSON)**):
+Or set it in `settings.json` (`Ctrl+Shift+P` → **Preferences: Open User Settings (JSON)**):
 
 ```json
 {
-  "workbench.colorTheme": "Leylah Void",
+  "workbench.colorTheme": "Leylah Void: Neon",
   "editor.semanticHighlighting.enabled": true,
   "editor.bracketPairColorization.enabled": true
 }
 ```
 
-The last two lines are optional but recommended — they enable the semantic colors and bracket colors the theme is designed around.
+Swap the label for `"Leylah Void: Matte"` to try the other finish.
 
 ## Uninstall
 
@@ -181,27 +189,29 @@ code --uninstall-extension pushkar7270.leylah-void      # VS Code
 codium --uninstall-extension pushkar7270.leylah-void    # VSCodium
 ```
 
-Or right-click the extension in the Extensions view → **Uninstall**.
-
 ---
 
 ## Repository layout
 
 ```
 .
-├── package.json                        # extension manifest
+├── package.json                        # extension manifest (two themes)
 ├── themes/
-│   └── leylah-void-color-theme.json    # 535 UI colors + token rules
+│   ├── _base.json                      # structural template (not shipped)
+│   ├── leylah-void-neon-color-theme.json
+│   └── leylah-void-matte-color-theme.json
 ├── assets/
-│   ├── preview.png                     # README preview (generated)
-│   └── icon.png                        # extension icon (generated)
+│   ├── preview-neon.png                # README preview
+│   ├── preview-matte.png               # README preview
+│   └── icon.png                        # extension icon
 ├── scripts/
+│   ├── build-palettes.py               # regenerates both theme JSONs
+│   ├── check-palette.py                # contrast / hue / CVD verification
 │   ├── build-vsix.py                   # builds dist/*.vsix, stdlib only
 │   ├── install-local.sh                # build + install + drop stale copies
-│   ├── check-palette.py                # contrast / hue / CVD verification
-│   └── make-assets.py                  # regenerates preview + icon (Pillow)
+│   └── make-assets.py                  # regenerates previews + icon (Pillow)
 ├── dist/
-│   └── leylah-void-2.0.0.vsix          # ready-to-install package
+│   └── leylah-void-2.1.0.vsix          # ready-to-install package
 ├── CHANGELOG.md
 └── LICENSE
 ```
@@ -209,7 +219,7 @@ Or right-click the extension in the Extensions view → **Uninstall**.
 ## Notes
 
 - The palette was sampled from a reference illustration; neither the artwork nor any character asset is redistributed here.
-- The theme targets `vs-dark`; there is no light variant.
+- Both themes target `vs-dark`; there is no light variant.
 - Tested on VSCodium 1.140 and VS Code 1.60+.
 
 ## License

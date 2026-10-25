@@ -1,8 +1,8 @@
 {
   "name": "leylah-void",
   "displayName": "Leylah Void",
-  "description": "Pitch-black dark theme built on a single neon palette in three contrast tiers - magenta, violet, blue, cyan, green, gold and coral.",
-  "version": "2.0.0",
+  "description": "Pitch-black theme in two finishes: Neon (vivid, warm) and Matte (dusty, warm). Same hue family, same contrast system, different finish.",
+  "version": "2.1.0",
   "publisher": "pushkar7270",
   "license": "MIT",
   "icon": "assets/icon.png",
@@ -17,7 +17,9 @@
     "dark",
     "black",
     "pitch black",
-    "magenta",
+    "neon",
+    "matte",
+    "warm",
     "color theme",
     "anime"
   ],
@@ -31,9 +33,14 @@
   "contributes": {
     "themes": [
       {
-        "label": "Leylah Void",
+        "label": "Leylah Void: Neon",
         "uiTheme": "vs-dark",
-        "path": "./themes/leylah-void-color-theme.json"
+        "path": "./themes/leylah-void-neon-color-theme.json"
+      },
+      {
+        "label": "Leylah Void: Matte",
+        "uiTheme": "vs-dark",
+        "path": "./themes/leylah-void-matte-color-theme.json"
       }
     ]
   }

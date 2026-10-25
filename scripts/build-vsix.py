@@ -58,7 +58,8 @@ content_types = """<?xml version="1.0" encoding="utf-8"?>
 
 files = [
     ("package.json", "extension/package.json"),
-    ("themes/leylah-void-color-theme.json", "extension/themes/leylah-void-color-theme.json"),
+    ("themes/leylah-void-neon-color-theme.json", "extension/themes/leylah-void-neon-color-theme.json"),
+    ("themes/leylah-void-matte-color-theme.json", "extension/themes/leylah-void-matte-color-theme.json"),
     ("assets/icon.png", "extension/assets/icon.png"),
     ("README.md", "extension/README.md"),
     ("LICENSE", "extension/LICENSE"),
